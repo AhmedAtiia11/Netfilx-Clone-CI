@@ -36,14 +36,14 @@ pipeline {
     }
     stage("TRIVY Scanner"){
             steps{
-                sh "trivy image ${DOCKER_IMAGE_NAME}:${GIT_COMMIT_REV} > trivy-image-${GIT_COMMIT_REV}.txt" 
+                sh "trivy image ${DOCKER_IMAGE_NAME}:${GIT_COMMIT_REV} > ./trivy-image-${GIT_COMMIT_REV}.txt" 
             }
         }
     // Trigger  the CD job at Jenkins
         stage('Trigger CD job ') {
                 steps {
                 echo "triggering CD"
-                build job: 'CD', parameters: [string(name: 'GIT_COMMIT_REV', value: env.GIT_COMMIT_REV)]
+                build job: 'Netfilx-clone-CD', parameters: [string(name: 'GIT_COMMIT_REV', value: env.GIT_COMMIT_REV)]
         }
         }      
   }
