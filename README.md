@@ -85,7 +85,6 @@ docker build --build-arg TMDB_V3_API_KEY=your_api_key_here -t netflix-clone .
 
 docker run --name netflix-clone-website --rm -d -p 80:80 netflix-clone
 ```
-
 ## Todo
 
 - Make the animation of video card portal more similar to Netflix.
