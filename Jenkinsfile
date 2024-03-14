@@ -23,7 +23,6 @@ pipeline {
                     }
                     }                           
      }
-     
      // push Docker Image to the registry with the modified name 
     stage('Deploy Image') {
       steps{
