@@ -38,6 +38,7 @@ pipeline {
                 sh "trivy image ${DOCKER_IMAGE_NAME}:${GIT_COMMIT_REV} > trivy-image-${GIT_COMMIT_REV}.txt" 
             }
         }
+        
     // Trigger  the CD job at Jenkins
         stage('Trigger CD job ') {
                 steps {
