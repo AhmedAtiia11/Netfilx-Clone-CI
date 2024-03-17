@@ -2,25 +2,9 @@
   <a href="http://netflix-clone-with-tmdb-using-react-mui.vercel.app/">
     <img src="./public/assets/netflix-logo.png" alt="Logo" width="100" height="32">
   </a>
-
+</div>
   <h3 align="center">Netflix Clone Project</h3>
 
-<details>
-  <ol>
-    <li>
-      <a href="#prerequests">Prerequests</a>
-    </li>
-    <li>
-      <a href="#which-features-this-project-deals-with">Which features this project deals with</a>
-    </li>
-    <li><a href="#third-party-libraries-used-except-for-react-and-rtk">Third Party libraries used except for React and RTK</a></li>
-    <li>
-      <a href="#contact">Contact</a>
-    </li>
-  </ol>
-</details>
-
-<br />
 
 <div align="center">
   <img src="./public/assets/home-page.png" alt="Logo" width="100%" height="100%">
