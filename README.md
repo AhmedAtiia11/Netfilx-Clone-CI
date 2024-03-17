@@ -12,6 +12,7 @@
 </div>
 
 ## OverView
+The Netflix Clone Project is a comprehensive endeavor leveraging various DevOps tools to streamline development, deployment, and monitoring processes. This project replicates the functionality and appearance of the popular streaming platform Netflix, providing a platform for learning and experimentation with modern DevOps practices.
 
 ## Prerequests
 
