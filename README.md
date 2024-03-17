@@ -3,20 +3,9 @@
     <img src="./public/assets/netflix-logo.png" alt="Logo" width="100" height="32">
   </a>
 
-  <h3 align="center">Netflix Clone</h3>
-
-  <p align="center">
-    <a href="https://netflix-clone-react-typescript.vercel.app/">View Demo</a>
-    ·
-    <a href="https://github.com/crazy-man22/netflix-clone-react-typescript/issues">Report Bug</a>
-    ·
-    <a href="https://github.com/crazy-man22/netflix-clone-react-typescript/issues">Request Feature</a>
-  </p>
-</div>
-
+  <h3 align="center">Netflix Clone Project</h3>
 
 <details>
-  <summary>Table of Contents</summary>
   <ol>
     <li>
       <a href="#prerequests">Prerequests</a>
@@ -36,48 +25,28 @@
 <div align="center">
   <img src="./public/assets/home-page.png" alt="Logo" width="100%" height="100%">
   <p align="center">Home Page</p>
-  <img src="./public/assets/mini-portal.png" alt="Logo" width="100%" height="100%">
-  <p align="center">Mini Portal</p>
-  <img src="./public/assets/detail-modal.png" alt="Logo" width="100%" height="100%">
-  <p align="center">Detail Modal</p>
-  <img src="./public/assets/grid-genre.png" alt="Logo" width="100%" height="100%">
-  <p align="center">Grid Genre Page</p>
-  <img src="./public/assets/watch.png" alt="Logo" width="100%" height="100%">
-  <p align="center">Watch Page with customer contol bar</p>
 </div>
 
 ## Prerequests
 
 - Create an account if you don't have on [TMDB](https://www.themoviedb.org/).
-  Because I use its free API to consume movie/tv data.
-- And then follow the [documentation](https://developers.themoviedb.org/3/getting-started/introduction) to create API Key
-- Finally, if you use v3 of TMDB API, create a file named `.env`, and copy and paste the content of `.env.example`.
-  And then paste the API Key you just created.
-
-## Which features this project deal with
-
-- How to create and use [Custom Hooks](https://reactjs.org/docs/hooks-custom.html)
-- How to use [Context](https://reactjs.org/docs/context.html) and its provider
-- How to use lazy and Suspense for [Code-Splitting](https://reactjs.org/docs/code-splitting.html)
-- How to use a new [lazy](https://reactrouter.com/en/main/route/lazy) feature of react-router to reduce bundle size.
-- How to use data [loader](https://reactrouter.com/en/main/route/loader) of react-router, and how to use redux dispatch in the loader to fetch data before rendering component.
-- How to use [Portal](https://reactjs.org/docs/portals.html)
-- How to use [Fowarding Refs](https://reactjs.org/docs/forwarding-refs.html) to make components reusuable
-- How to create and use [HOC](https://reactjs.org/docs/higher-order-components.html)
-- How to customize default theme of [MUI](https://mui.com/)
-- How to use [RTK](https://redux-toolkit.js.org/introduction/getting-started)
-- How to use [RTK Query](https://redux-toolkit.js.org/rtk-query/overview)
-- How to customize default classname of [MUI](https://mui.com/material-ui/experimental-api/classname-generator)
-- Infinite Scrolling(using [Intersection Observer API](https://developer.mozilla.org/en-US/docs/Web/API/Intersection_Observer_API))
-- How to make awesome carousel using [slick-carousel](https://react-slick.neostack.com)
-
-## Third Party libraries used except for React and RTK
-
-- [react-router-dom@v6.9](https://reactrouter.com/en/main)
-- [MUI(Material UI)](https://mui.com/)
-- [framer-motion](https://www.framer.com/docs/)
-- [video.js](https://videojs.com)
-- [react-slick](https://react-slick.neostack.com/)
+  , get your API KEY and add it to your Jenkins as a Secret .
+- install Helm v3 on our node
+- Run the `ngrok` tool to establish a tunnel between localhost and the public network.
+- Provide parameters to Jenkins:
+   - GitHub username.
+   - GitHub token.
+   - Credential-ID = github.
+   - DockerHub username.
+   - DockerHub password.
+   - Credential-ID = docker-cred.
+   - create a secret file with TMDB and credential-ID = TMDB_V3_API_KEY
+3. Create a 'prod' namespace.
+4. At CI job check 
+      GitHub hook trigger for GITScm polling
+      This project is parameterized >> secret name:tmdb default-value:TMDB_V3_API_KEY
+5. At CD job check
+      This project is parameterized >> string name : GIT_COMMIT_REV
 
 ## Install with Docker
 
@@ -86,10 +55,65 @@ docker build --build-arg TMDB_V3_API_KEY=your_api_key_here -t netflix-clone .
 
 docker run --name netflix-clone-website --rm -d -p 80:80 netflix-clone
 ```
-## Todo
 
-- Make the animation of video card portal more similar to Netflix.
-- Improve performance. I am using `context` and `provider` but all components subscribed to the context's value are re-rendered. These re-renders happen even if the part of the value is not used in render of the component. there are [several ways](https://blog.axlight.com/posts/4-options-to-prevent-extra-rerenders-with-react-context/) to prevent the re-renders from these behaviours. In addition to them, there may be several performance issues.
-- Replace bundler([Vite](https://vitejs.dev/guide)) with [Turbopack](https://turbo.build/pack/docs/why-turbopack). Turbopack is introduced in Next.js conf recently. It's very fast but it's nor ready to use right now. it just support Next.js, and they plan to support all others as soon as possible. so if it's ready to use, replace [Vite](https://vitejs.dev/guide) with [Turbopack](https://turbo.build/pack/docs/why-turbopack).
-- Add accessibilities for better UX.
-- Add Tests.
+### CI/CD Workflow:
+
+1. Push changes to the GitHub repo (`Netfilx-Clone-CI`).
+
+2. GitHub webhook triggers the "Netfilx-clone-CI" job, executing the Jenkinsfile.
+
+3. CI Jenkinsfile stages:
+   - Clone the git repo.
+   - Build the Dockerfile and name the image `dockerhub-accountname/netfilx-clone:<commit-number>`
+      and give it the TMDB_API_KEY as a secret credential
+   - Push the Docker image to the DockerHub Registry.
+   - make a unit test to make sure trivy is running on the node
+   - run TRIVY scannner to scan docker image and give us a report at ./trivy-image-<commit-number>
+   - Trigger "Netfilx-clone-CD" job and pass the commit number as a parameter.
+
+4. "Netfilx-clone-CD" job Jenkinsfile:
+   - Run `artifact_version_update` to change the deployment.yaml file with the newer image version containing the last commit number.
+   - Push the updated deployment.yaml file to the GitHub repo (`Netfilx-clone-CD`).
+
+5. ArgoCD is triggered, deploying the application to the 'prod' namespace.
+
+6. To obtain ArgoCD IP
+```
+ kubectl get pods -n argocd -o wide |grep argocd-server
+```
+   - Then Open in your browser Pod-IP:80 <port specified in the pod definition file>
+   - username : admin
+   - Password : `kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath='{.data.password}' | base64 -d`
+  
+7. create an Application and provide the (`Application.yaml`) file and it will runs automatically when it gets triggered .
+
+8. Open in your browser and view the result.
+     ```
+     http://localhost:30007/
+     ``` 
+     `If it's a black screen with no content  then use VPN and reopen page`
+
+9. To monitor Node We use Prometheus and Grafana using Helm
+   Run the Following commmands
+    ```
+    helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
+    helm repo add grafana https://grafana.github.io/helm-charts
+    helm repo update
+    helm install prometheus prometheus-community/prometheus
+    kubectl edit svc prometheus-server >> make it's type NodePort on 30002
+    helm install grafana grafana/grafana
+    kubectl edit svc grafana >> make it's type NodePort on 30001
+    ngrok http http://localhost:30002
+    ```
+10. Open in your browser
+
+    ```
+    http:localhost:30001
+    username: admin
+    password: `kubectl get secret grafana -o jsonpath='{.data.admin-password}'| base64 --decode`
+    add data source >> prometheus >> copy prometheus URL from Ngrok
+    import dashboard ID = 1860
+
+    ```    
+    
+

@@ -3,7 +3,7 @@ pipeline {
     environment {
         DOCKER_HUB_USER_NAME="ahmedatiia11"
         DOCKER_IMAGE_NAME = "${DOCKER_HUB_USER_NAME}/netfilx-clone"
-        // TMDB_V3_API_KEY="8720293778a54d900600819481d26434"
+        // TMDB_V3_API_KEY="Get your own API key and and add it to Jenkins as a Secret parameter"
     }
 
     stages {
