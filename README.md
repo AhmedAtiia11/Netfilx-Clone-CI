@@ -103,9 +103,8 @@ docker run --name netflix-clone-website --rm -d -p 80:80 netflix-clone
 
     ```    
 <div align="center">
-  <img src="./public/assets/grafana.png" alt="Logo" width="100%" height="100%">
-  <p align="center">Grafana Page</p>
+    <img src="./public/assets/grafana.png" alt="Grafana" width="100" height="32">
 </div>
-
+  <h3 align="center">Grafana</h3>
 
 
