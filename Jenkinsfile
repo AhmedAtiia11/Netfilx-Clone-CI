@@ -33,6 +33,7 @@ pipeline {
         }
       }
     }
+    
     stage("TRIVY Scanner"){
             steps{
                 sh "trivy image ${DOCKER_IMAGE_NAME}:${GIT_COMMIT_REV} > trivy-image-${GIT_COMMIT_REV}.txt" 
