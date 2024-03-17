@@ -11,6 +11,8 @@
   <p align="center">Home Page</p>
 </div>
 
+## OverView
+
 ## Prerequests
 
 - Create an account if you don't have on [TMDB](https://www.themoviedb.org/).
@@ -32,7 +34,7 @@
 5. At CD job check
       This project is parameterized >> string name : GIT_COMMIT_REV
 
-## Install with Docker
+## Run with Docker
 
 ```sh
 docker build --build-arg TMDB_V3_API_KEY=your_api_key_here -t netflix-clone .
@@ -99,5 +101,10 @@ docker run --name netflix-clone-website --rm -d -p 80:80 netflix-clone
     import dashboard ID = 1860
 
     ```    
-    
+<div align="center">
+  <img src="./public/assets/grafana.png" alt="Logo" width="100%" height="100%">
+  <p align="center">Grafana Page</p>
+</div>
+
+
 
